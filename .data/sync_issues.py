@@ -100,7 +100,7 @@ github = GithubExtended.cast(github)
 # {
 #   "id": 1,  # corresponds to the issue 001
 #   "parent": 5,  # corresponds to the issue 005 => issue is duplicate of 005
-#   "closed": True,  # True for a closed, unlabeled or low/info issue
+#   "closed": True,  # True for a closed or duplicate issue
 #   "auditor": "rcstanciu",
 #   "severity": "H",  # Possible values: "H", "M" or "false"
 #   "title": "Issue title",
@@ -249,11 +249,6 @@ def main():
             "description": "A valid Medium severity issue",
         },
         {
-            "name": "Low/Info",
-            "color": "FBCA04",
-            "description": "A valid Low/Informational severity issue",
-        },
-        {
             "name": "Has Duplicates",
             "color": "D4C5F9",
             "description": "A valid issue with 1+ other issues describing the same vulnerability",
@@ -386,12 +381,6 @@ def main():
                     new_labels.remove("High")
                 if "Medium" in existing_labels:
                     new_labels.remove("Medium")
-                if "Low" in existing_labels:
-                    new_labels.remove("Low")
-                if "Informational" in existing_labels:
-                    new_labels.remove("Informational")
-                if "Low/Info" in existing_labels:
-                    new_labels.remove("Low/Info")
                 if "Has Duplicates" in existing_labels:
                     new_labels.remove("Has Duplicates")
                 if "Duplicate" in existing_labels:
