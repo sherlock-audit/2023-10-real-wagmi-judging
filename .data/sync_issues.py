@@ -206,16 +206,16 @@ def process_directory(repo, path):
         }
         dir_issues_ids.append(issue_id)
 
-        # Set the parent field for all duplicates in this directory
-        if parent is None and severity != "false":
-            raise Exception("Family %s does not have a primary file (-best.md)." % path)
+    # Set the parent field for all duplicates in this directory
+    if parent is None and severity != "false":
+        raise Exception("Family %s does not have a primary file (-best.md)." % path)
 
-        if parent:
-            for issue_id in dir_issues_ids:
-                if issue_id != parent:
-                    issues[parent]["has_duplicates"] = True
-                    issues[issue_id]["parent"] = parent
-                    issues[issue_id]["closed"] = True
+    if parent:
+        for issue_id in dir_issues_ids:
+            if issue_id != parent:
+                issues[parent]["has_duplicates"] = True
+                issues[issue_id]["parent"] = parent
+                issues[issue_id]["closed"] = True
 
     # Process any directories inside
     for directory in dirs:
