@@ -43,6 +43,10 @@ This is an inattention error related to the accelerated development of the proje
 
 Fixed: https://github.com/RealWagmi/wagmi-leverage/commit/f5860c819eeb5146cc0c5c3b563ee83feb4ab33d
 
+**IAm0x52**
+
+Fix looks good. Correct variable is used now
+
 # Issue H-2: Adversary can reenter takeOverDebt() during liquidation to steal vault funds 
 
 Source: https://github.com/sherlock-audit/2023-10-real-wagmi-judging/issues/76 
@@ -160,6 +164,10 @@ Unfortunately, during development, we lost the nonReentrant-modifier just like c
 
 Fixed: https://github.com/RealWagmi/wagmi-leverage/commit/955d742c37736192f81a20c39a82324f3d711fb4
 
+**IAm0x52**
+
+Fix looks good. Nonreentrant has been added to takeOverDebt()
+
 # Issue H-3: Creditor can maliciously burn UniV3 position to permanently lock funds 
 
 Source: https://github.com/sherlock-audit/2023-10-real-wagmi-judging/issues/78 
@@ -221,6 +229,10 @@ I would recommend storing each initial creditor when a loan is opened. Add try-c
 **fann95**
 
 Fixed: https://github.com/RealWagmi/wagmi-leverage/commit/788c72b8242cc704e5db58cfdbfcdf8d4559d4b5
+
+**IAm0x52**
+
+Fix looks good. Burned tokens no longer cause a revert and tokens are sent to borrower as profit
 
 # Issue H-4: No slippage protection during repayment due to dynamic slippage params and easily influenced `slot0()` 
 
@@ -394,6 +406,10 @@ I leave the decision up to you.
 
 I'll leave it high severity because of the reason mentioned above.
 
+**IAm0x52**
+
+Fix looks good. sqrtPriceLimitX96 is now used to determine if a swap has been frontrun. If the simulated swap results in a higher (or lower for sells) price limit than expected the transaction will revert.
+
 # Issue M-1: DoS of lenders and gas griefing by packing tokenIdToBorrowingKeys arrays 
 
 Source: https://github.com/sherlock-audit/2023-10-real-wagmi-judging/issues/15 
@@ -486,6 +502,10 @@ Manual Review
 **fann95**
 
 Fixed: https://github.com/RealWagmi/wagmi-leverage/commit/cb4d91fdc632b1a4496932ec4546c7f4fa78e842
+
+**IAm0x52**
+
+Fix looks good. `tokenIdToBorrowingKeys` has been changed to an enumerable set removing the gas DOS
 
 # Issue M-2: No deadline and slippage check on `takeOverDebt()` can lead to unexpected results 
 
@@ -802,6 +822,10 @@ Escalations have been resolved successfully!
 Escalation status:
 - [IAm0x52](https://github.com/sherlock-audit/2023-10-real-wagmi-judging/issues/51/#issuecomment-1789466887): rejected
 
+**IAm0x52**
+
+Fix looks good. The `checkDeadline` modifier has been added. In conjuction with changes made for #119 this is no longer an issue.
+
 # Issue M-3: Adversary can overwrite function selector in _patchAmountAndCall due to inline assembly lack of overflow protection 
 
 Source: https://github.com/sherlock-audit/2023-10-real-wagmi-judging/issues/82 
@@ -871,6 +895,10 @@ My recommendation would be to limit `swapAmountInDataIndex` to `div(data.length,
 
 Fixed: https://github.com/RealWagmi/wagmi-leverage/commit/b568b21ae07587ee784bba2c25c7562207a4b027
 
+**IAm0x52**
+
+Fix looks good. Indexes that indicate a position larger then the calldata size cause the function to revert.
+
 # Issue M-4: Blacklisted creditor can block all repayment besides emergency closure 
 
 Source: https://github.com/sherlock-audit/2023-10-real-wagmi-judging/issues/83 
@@ -920,6 +948,10 @@ Create an escrow to hold funds in the event that the creditor cannot receive the
 **fann95**
 
 Fixed: https://github.com/RealWagmi/wagmi-leverage/commit/3c17a39e8a69a8912e6f87e84a19f55889353328
+
+**IAm0x52**
+
+Fix looks good. Fee collection has been made generic instead of specific to protocol fees. Creditor fees are now cached and collected.
 
 # Issue M-5: Incorrect calculations of borrowingCollateral leads to DoS for positions in the current tick range due to underflow 
 
@@ -1042,6 +1074,10 @@ Escalations have been resolved successfully!
 Escalation status:
 - [ali-shehab](https://github.com/sherlock-audit/2023-10-real-wagmi-judging/issues/86/#issuecomment-1786029646): accepted
 - [IAm0x52](https://github.com/sherlock-audit/2023-10-real-wagmi-judging/issues/86/#issuecomment-1789413507): accepted
+
+**IAm0x52**
+
+Fix looks good. Underflow of this calculation is prevented via a ternary operator
 
 # Issue M-6: `computePoolAddress()` will not work on ZkSync Era 
 
@@ -1225,11 +1261,9 @@ The calculation must be made with the new borrowing.borrowedAmount, since in the
 
 **fann95**
 
-this is your option
-![Screenshot from 2023-10-30 11-38-00](https://github.com/sherlock-audit/2023-10-real-wagmi-judging/assets/4136026/6d0e6c95-b698-4cfa-8766-367d7be1335c)
+this is your option \\
 
-and this is my option
-![Screenshot from 2023-10-30 11-38-15](https://github.com/sherlock-audit/2023-10-real-wagmi-judging/assets/4136026/939415dc-a3c8-4435-a740-7e0cc8ffa777)
+and this is my option \\
 
 In your version, the fee debt is reduced, although no one is paying it off.
 
@@ -1603,6 +1637,10 @@ Fixed: https://github.com/RealWagmi/wagmi-leverage/commit/4d355d8cafc86f1341af7b
 
 Agree with medium severity. Will be accepting the escalation.
 
+**IAm0x52**
+
+Fix looks good. `borrowingStorage.accLoanRatePerSeconds` does not need to be recalculated and so the calculation has been removed.
+
 # Issue M-8: Borrower collateral that they are owed can get stuck in Vault and not sent back to them after calling `repay` 
 
 Source: https://github.com/sherlock-audit/2023-10-real-wagmi-judging/issues/122 
@@ -1906,4 +1944,8 @@ Escalations have been resolved successfully!
 
 Escalation status:
 - [IAm0x52](https://github.com/sherlock-audit/2023-10-real-wagmi-judging/issues/122/#issuecomment-1789405118): accepted
+
+**IAm0x52**
+
+Fix looks good. Minimum calculations have been moved to `_calcFeeCompensationUpToMin` which charges the user the minimum fee if the currently accrued fee is lower than the minimum.
 
